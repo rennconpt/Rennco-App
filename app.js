@@ -1,8 +1,13 @@
 function login(){
- if(u.value==="admin" && p.value==="rennco123"){
-  login.style.display="none";
-  app.style.display="flex";
- } else alert("Wrong login");
+  const username = document.getElementById("u").value.trim();
+  const password = document.getElementById("p").value.trim();
+
+  if(username === "admin" && password === "rennco123"){
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "flex";
+  } else {
+    alert("Wrong login");
+  }
 }
 
 function show(id){
