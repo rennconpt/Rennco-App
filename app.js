@@ -13,23 +13,27 @@ function show(id){
 let jobs=[];
 
 function addJob(){
- jobs.push({name:jn.value,address:ja.value});
+ jobs.push({name:jn.value,address:ja.value,desc:jd.value});
  render();
 }
 
 function render(){
- jobList.innerHTML=jobs.map(j=>`<div>${j.name} - ${j.address}</div>`).join('');
- stats.innerHTML="Jobs: "+jobs.length;
+ jobList.innerHTML=jobs.map(j=>`<div class='card'><b>${j.name}</b><br>${j.address}<br>${j.desc}</div>`).join('');
+ jobCount.innerText=jobs.length;
 }
 
 function addItem(){
  let d=document.createElement("div");
- d.innerHTML="<input placeholder='Desc'><input placeholder='Qty'><input placeholder='Price'>";
+ d.innerHTML="<input placeholder='Description'><input placeholder='Qty'><input placeholder='Price'>";
  items.appendChild(d);
 }
 
 function genQuote(){
- quoteOut.innerHTML="<div>Quote Generated</div>";
+ quoteOut.innerHTML="<div class='card'>Quote ready</div>";
+}
+
+function genInvoice(){
+ invOut.innerHTML="<div class='card'>Invoice ready</div>";
 }
 
 render();

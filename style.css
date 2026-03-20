@@ -1,8 +1,12 @@
-body{margin:0;font-family:Arial;background:#1c1f22;color:#fff;display:flex;height:100vh}
-.sidebar{width:220px;background:#2a2f33;padding:20px}
+body{margin:0;font-family:Segoe UI;background:#1e1f23;color:#fff;display:flex;height:100vh}
+.sidebar{width:240px;background:#2a2f33;padding:20px;display:flex;flex-direction:column}
 .sidebar img{width:100%;margin-bottom:20px}
-.sidebar button{display:block;width:100%;background:none;border:none;color:#00b3a4;padding:10px;text-align:left}
-.main{flex:1;padding:20px}
-input{width:100%;padding:10px;margin:5px 0;background:#3a3f44;border:none;color:#fff}
-button{background:#00b3a4;border:none;padding:10px;color:#fff;margin-top:5px;width:100%}
-.login-box{width:300px;margin:auto;margin-top:100px}
+.sidebar button{background:none;border:none;color:#00bfa6;padding:12px;text-align:left;font-size:15px;cursor:pointer}
+.sidebar button:hover{background:#3a3f44;border-radius:6px}
+.main{flex:1;padding:25px;overflow:auto}
+.card{background:#2f3438;padding:20px;border-radius:10px;margin-bottom:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+input,textarea{width:100%;padding:10px;margin:6px 0;background:#3a3f44;border:none;color:#fff;border-radius:6px}
+button{background:#00bfa6;border:none;padding:12px;color:#fff;border-radius:6px;margin-top:5px;cursor:pointer}
+button:hover{background:#00a893}
+.login-box{width:320px;margin:auto;margin-top:120px;background:#2a2f33;padding:20px;border-radius:10px}
