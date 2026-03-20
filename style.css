@@ -1,0 +1,8 @@
+body{margin:0;font-family:Arial;background:#1c1f22;color:#fff;display:flex;height:100vh}
+.sidebar{width:220px;background:#2a2f33;padding:20px}
+.sidebar img{width:100%;margin-bottom:20px}
+.sidebar button{display:block;width:100%;background:none;border:none;color:#00b3a4;padding:10px;text-align:left}
+.main{flex:1;padding:20px}
+input{width:100%;padding:10px;margin:5px 0;background:#3a3f44;border:none;color:#fff}
+button{background:#00b3a4;border:none;padding:10px;color:#fff;margin-top:5px;width:100%}
+.login-box{width:300px;margin:auto;margin-top:100px}

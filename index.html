@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rennco App</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="login">
+<div class="login-box">
+<h2>Login</h2>
+<input id="u" placeholder="Username">
+<input id="p" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+</div>
+
+<div id="app" style="display:none;">
+<div class="sidebar">
+<img src="logo.png">
+<button onclick="show('dashboard')">Dashboard</button>
+<button onclick="show('jobs')">Jobs</button>
+<button onclick="show('quote')">Quotes</button>
+</div>
+
+<div class="main">
+<div id="dashboard">
+<h2>Dashboard</h2>
+<div id="stats"></div>
+</div>
+
+<div id="jobs" style="display:none;">
+<h2>Jobs</h2>
+<input id="jn" placeholder="Customer Name">
+<input id="ja" placeholder="Address">
+<button onclick="addJob()">Add Job</button>
+<div id="jobList"></div>
+</div>
+
+<div id="quote" style="display:none;">
+<h2>Quote</h2>
+<input id="qc" placeholder="Customer">
+<div id="items"></div>
+<button onclick="addItem()">Add Item</button>
+<button onclick="genQuote()">Generate</button>
+<div id="quoteOut"></div>
+</div>
+</div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
