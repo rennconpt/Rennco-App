@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rennco Complete</title>
+<title>Rennco Pro</title>
 <style>
 body{margin:0;font-family:Arial;background:#1e1f23;color:#fff;display:flex;height:100vh}
 .sidebar{width:240px;background:#2a2f33;padding:20px;display:flex;flex-direction:column}
@@ -15,15 +15,15 @@ body{margin:0;font-family:Arial;background:#1e1f23;color:#fff;display:flex;heigh
 input,textarea{width:100%;padding:10px;margin:5px 0;background:#3a3f44;border:none;color:#fff;border-radius:6px}
 button.mainbtn{background:#00bfa6;border:none;padding:12px;color:#fff;border-radius:6px;margin-top:5px;width:100%}
 .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.day{background:#2f3438;padding:10px;text-align:center;border-radius:6px}
-.login-box{width:320px;margin:auto;margin-top:120px;background:#2a2f33;padding:20px;border-radius:10px}
+.day{background:#2f3438;padding:10px;text-align:center;border-radius:6px;min-height:60px}
+.doc{background:#fff;color:#000;padding:15px}
 </style>
 </head>
 <body>
 
 <div id="login">
-<div class="login-box">
-<h2>Rennco Login</h2>
+<div style="margin:auto;width:300px">
+<h2>Login</h2>
 <input id="u" placeholder="Username">
 <input id="p" type="password" placeholder="Password">
 <button class="mainbtn" onclick="login()">Login</button>
@@ -36,7 +36,8 @@ button.mainbtn{background:#00bfa6;border:none;padding:12px;color:#fff;border-rad
 <button onclick="show('dashboard')">Dashboard</button>
 <button onclick="show('jobs')">Jobs</button>
 <button onclick="show('calendar')">Calendar</button>
-<button onclick="show('quote')">Quotes</button>
+<button onclick="show('quote')">Quote</button>
+<button onclick="show('voice')">Voice Notes</button>
 </div>
 
 <div class="main">
@@ -49,8 +50,8 @@ button.mainbtn{background:#00bfa6;border:none;padding:12px;color:#fff;border-rad
 </div>
 
 <div id="jobs" style="display:none;">
-<h2>Jobs</h2>
-<input id="jn" placeholder="Customer Name">
+<h2>Add Job</h2>
+<input id="jn" placeholder="Customer">
 <input id="ja" placeholder="Address">
 <input id="jdDate" type="date">
 <textarea id="jd" placeholder="Description"></textarea>
@@ -64,12 +65,19 @@ button.mainbtn{background:#00bfa6;border:none;padding:12px;color:#fff;border-rad
 </div>
 
 <div id="quote" style="display:none;">
-<h2>Quote Builder</h2>
+<h2>Quote</h2>
 <input id="qc" placeholder="Customer">
 <div id="items"></div>
-<button class="mainbtn" onclick="addItem()">Add Item</button>
-<button class="mainbtn" onclick="genQuote()">Generate</button>
+<button onclick="addItem()">Add Item</button>
+<button onclick="genQuote()">Generate</button>
+<button onclick="printPDF()">Download / Share</button>
 <div id="quoteOut"></div>
+</div>
+
+<div id="voice" style="display:none;">
+<h2>Voice Notes</h2>
+<button onclick="startVoice()">Start Recording</button>
+<p id="voiceText"></p>
 </div>
 
 </div>
@@ -127,7 +135,33 @@ function addItem(){
 }
 
 function genQuote(){
- quoteOut.innerHTML="<div class='card'>Quote ready</div>";
+ let html="";
+ let rows=items.children;
+ let total=0;
+ for(let r of rows){
+  let d=r.children[0].value;
+  let q=r.children[1].value;
+  let p=r.children[2].value;
+  let t=q*p;
+  total+=t;
+  html+=`<tr><td>${d}</td><td>${q}</td><td>${p}</td><td>${t}</td></tr>`;
+ }
+ let vat=total*0.2;
+ quoteOut.innerHTML=`<div class='doc' id='pdf'><h2>RENNCO LTD</h2><table border=1 width=100%>${html}</table>Total £${total+vat}</div>`;
+}
+
+function printPDF(){
+ let w=window.open();
+ w.document.write(document.getElementById("pdf").innerHTML);
+ w.print();
+}
+
+function startVoice(){
+ let rec=new webkitSpeechRecognition();
+ rec.onresult=function(e){
+  voiceText.innerText=e.results[0][0].transcript;
+ }
+ rec.start();
 }
 
 render();
