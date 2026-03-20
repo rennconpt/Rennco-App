@@ -2,17 +2,20 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rennco App</title>
+<title>Rennco Complete</title>
 <style>
 body{margin:0;font-family:Arial;background:#1e1f23;color:#fff;display:flex;height:100vh}
 .sidebar{width:240px;background:#2a2f33;padding:20px;display:flex;flex-direction:column}
 .sidebar img{width:100%;margin-bottom:20px}
 .sidebar button{background:none;border:none;color:#00bfa6;padding:12px;text-align:left;cursor:pointer}
 .sidebar button:hover{background:#3a3f44;border-radius:6px}
-.main{flex:1;padding:20px}
+.main{flex:1;padding:20px;overflow:auto}
 .card{background:#2f3438;padding:15px;border-radius:10px;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 input,textarea{width:100%;padding:10px;margin:5px 0;background:#3a3f44;border:none;color:#fff;border-radius:6px}
 button.mainbtn{background:#00bfa6;border:none;padding:12px;color:#fff;border-radius:6px;margin-top:5px;width:100%}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.day{background:#2f3438;padding:10px;text-align:center;border-radius:6px}
 .login-box{width:320px;margin:auto;margin-top:120px;background:#2a2f33;padding:20px;border-radius:10px}
 </style>
 </head>
@@ -32,63 +35,99 @@ button.mainbtn{background:#00bfa6;border:none;padding:12px;color:#fff;border-rad
 <img src="logo.png">
 <button onclick="show('dashboard')">Dashboard</button>
 <button onclick="show('jobs')">Jobs</button>
+<button onclick="show('calendar')">Calendar</button>
+<button onclick="show('quote')">Quotes</button>
 </div>
 
 <div class="main">
+
 <div id="dashboard">
 <h2>Dashboard</h2>
-<div class="card" id="stats"></div>
+<div class="grid">
+<div class="card">Jobs: <span id="jobCount">0</span></div>
+</div>
 </div>
 
 <div id="jobs" style="display:none;">
 <h2>Jobs</h2>
 <input id="jn" placeholder="Customer Name">
 <input id="ja" placeholder="Address">
+<input id="jdDate" type="date">
 <textarea id="jd" placeholder="Description"></textarea>
 <button class="mainbtn" onclick="addJob()">Add Job</button>
 <div id="jobList"></div>
 </div>
+
+<div id="calendar" style="display:none;">
+<h2>Calendar</h2>
+<div class="calendar" id="calendarGrid"></div>
+</div>
+
+<div id="quote" style="display:none;">
+<h2>Quote Builder</h2>
+<input id="qc" placeholder="Customer">
+<div id="items"></div>
+<button class="mainbtn" onclick="addItem()">Add Item</button>
+<button class="mainbtn" onclick="genQuote()">Generate</button>
+<div id="quoteOut"></div>
+</div>
+
 </div>
 </div>
 
 <script>
 function login(){
-  const user=document.getElementById("u").value.trim();
-  const pass=document.getElementById("p").value.trim();
-
-  if(user==="admin" && pass==="rennco123"){
-    document.getElementById("login").style.display="none";
-    document.getElementById("app").style.display="flex";
-  } else {
-    alert("Wrong login");
-  }
+ if(u.value==="admin" && p.value==="rennco123"){
+  login.style.display="none";
+  app.style.display="flex";
+ } else alert("Wrong login");
 }
 
 function show(id){
-  document.querySelectorAll('.main > div').forEach(d=>d.style.display='none');
-  document.getElementById(id).style.display='block';
+ document.querySelectorAll('.main > div').forEach(d=>d.style.display='none');
+ document.getElementById(id).style.display='block';
 }
 
 let jobs=JSON.parse(localStorage.getItem("jobs")||"[]");
 
 function save(){
-  localStorage.setItem("jobs",JSON.stringify(jobs));
-  render();
+ localStorage.setItem("jobs",JSON.stringify(jobs));
+ render();
 }
 
 function addJob(){
-  jobs.push({
-    name:document.getElementById("jn").value,
-    address:document.getElementById("ja").value,
-    desc:document.getElementById("jd").value
-  });
-  save();
+ jobs.push({
+  name:jn.value,
+  address:ja.value,
+  date:jdDate.value,
+  desc:jd.value
+ });
+ save();
 }
 
 function render(){
-  document.getElementById("jobList").innerHTML =
-    jobs.map(j=>`<div class='card'><b>${j.name}</b><br>${j.address}<br>${j.desc}</div>`).join("");
-  document.getElementById("stats").innerText="Jobs: "+jobs.length;
+ jobList.innerHTML = jobs.map(j=>`<div class='card'><b>${j.name}</b><br>${j.address}<br>${j.date}<br>${j.desc}</div>`).join('');
+ jobCount.innerText = jobs.length;
+ renderCalendar();
+}
+
+function renderCalendar(){
+ let grid="";
+ for(let i=1;i<=30;i++){
+  let dayJobs = jobs.filter(j=>j.date && j.date.endsWith("-"+String(i).padStart(2,'0')));
+  grid+=`<div class='day'>${i}<br>${dayJobs.length} jobs</div>`;
+ }
+ calendarGrid.innerHTML=grid;
+}
+
+function addItem(){
+ let d=document.createElement("div");
+ d.innerHTML="<input placeholder='Desc'><input placeholder='Qty'><input placeholder='Price'>";
+ items.appendChild(d);
+}
+
+function genQuote(){
+ quoteOut.innerHTML="<div class='card'>Quote ready</div>";
 }
 
 render();
